@@ -1,5 +1,11 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" 
+    x-data="{ 
+        darkMode: localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    }" 
+    x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" 
+    :class="{ 'dark': darkMode }"
+>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,13 +17,46 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        
+        <!-- Dark Mode & Sidebar State Script (prevents flash) -->
+        <script>
+            // Dark mode
+            if (localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        </script>
+        
+        <style>
+            /* Prevent layout shift during page load */
+            [x-cloak] { display: none !important; }
+            
+            /* Smooth page transitions */
+            .page-transition {
+                animation: fadeIn 0.2s ease-out;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(4px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        </style>
     </head>
-    <body class="font-sans antialiased bg-gray-100 dark:bg-gray-950">
-        <div x-data="{ sidebarOpen: true, sidebarMobileOpen: false }" class="min-h-screen">
+    <body class="font-sans antialiased bg-gray-50 dark:bg-gray-950 transition-colors duration-200">
+        <div 
+            x-data="{ 
+                sidebarOpen: localStorage.getItem('sidebarOpen') !== 'false',
+                sidebarMobileOpen: false,
+                init() {
+                    this.$watch('sidebarOpen', val => localStorage.setItem('sidebarOpen', val));
+                }
+            }" 
+            class="min-h-screen"
+        >
             
             <!-- Sidebar -->
             @include('layouts.partials.sidebar')
@@ -25,89 +64,47 @@
             <!-- Mobile Sidebar Overlay -->
             <div 
                 x-show="sidebarMobileOpen" 
-                x-transition:enter="transition-opacity ease-linear duration-300"
+                x-transition:enter="transition-opacity ease-out duration-200"
                 x-transition:enter-start="opacity-0"
                 x-transition:enter-end="opacity-100"
-                x-transition:leave="transition-opacity ease-linear duration-300"
+                x-transition:leave="transition-opacity ease-in duration-150"
                 x-transition:leave-start="opacity-100"
                 x-transition:leave-end="opacity-0"
                 @click="sidebarMobileOpen = false"
-                class="fixed inset-0 bg-gray-900/80 z-30 lg:hidden"
+                class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-30 lg:hidden"
+                x-cloak
             ></div>
 
             <!-- Main Content Wrapper -->
             <div 
-                class="transition-all duration-300 ease-in-out"
+                class="min-h-screen transition-[margin] duration-300 ease-out"
                 :class="sidebarOpen ? 'lg:ml-64' : 'lg:ml-20'"
             >
                 <!-- Top Navbar -->
                 @include('layouts.partials.navbar')
 
-                <!-- Page Heading -->
-                @isset($header)
-                    <header class="pt-20 pb-4 px-4 sm:px-6 lg:px-8">
-                        <div class="max-w-7xl mx-auto">
-                            {{ $header }}
-                        </div>
-                    </header>
-                @endisset
+                <!-- Page Content Container -->
+                <div class="page-transition">
+                    <!-- Page Heading -->
+                    @isset($header)
+                        <header class="pt-20 pb-4 px-4 sm:px-6 lg:px-8">
+                            <div class="max-w-7xl mx-auto">
+                                {{ $header }}
+                            </div>
+                        </header>
+                    @endisset
 
-                <!-- Page Content -->
-                <main class="px-4 sm:px-6 lg:px-8 py-6 {{ !isset($header) ? 'pt-24' : '' }}">
-                    <div class="max-w-7xl mx-auto">
-                        {{ $slot }}
-                    </div>
-                </main>
+                    <!-- Page Content -->
+                    <main class="px-4 sm:px-6 lg:px-8 py-6 {{ !isset($header) ? 'pt-24' : '' }}">
+                        <div class="max-w-7xl mx-auto">
+                            {{ $slot }}
+                        </div>
+                    </main>
+                </div>
             </div>
         </div>
 
-        <!-- Toast Notifications Container -->
-        @if(session('success') || session('error') || session('warning') || session('info'))
-        <div 
-            x-data="{ show: true }" 
-            x-show="show" 
-            x-init="setTimeout(() => show = false, 5000)"
-            x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0 transform translate-y-2"
-            x-transition:enter-end="opacity-100 transform translate-y-0"
-            x-transition:leave="transition ease-in duration-200"
-            x-transition:leave-start="opacity-100 transform translate-y-0"
-            x-transition:leave-end="opacity-0 transform translate-y-2"
-            class="fixed bottom-4 right-4 z-50"
-        >
-            @if(session('success'))
-                <div class="flex items-center gap-3 px-4 py-3 bg-success-500 text-white rounded-xl shadow-lg">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                    </svg>
-                    <span>{{ session('success') }}</span>
-                </div>
-            @endif
-            @if(session('error'))
-                <div class="flex items-center gap-3 px-4 py-3 bg-danger-500 text-white rounded-xl shadow-lg">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                    <span>{{ session('error') }}</span>
-                </div>
-            @endif
-            @if(session('warning'))
-                <div class="flex items-center gap-3 px-4 py-3 bg-warning-500 text-white rounded-xl shadow-lg">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                    </svg>
-                    <span>{{ session('warning') }}</span>
-                </div>
-            @endif
-            @if(session('info'))
-                <div class="flex items-center gap-3 px-4 py-3 bg-primary-500 text-white rounded-xl shadow-lg">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    <span>{{ session('info') }}</span>
-                </div>
-            @endif
-        </div>
-        @endif
+        <!-- Toast Notifications Component -->
+        <x-toast-notifications />
     </body>
 </html>

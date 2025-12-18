@@ -14,7 +14,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ["Inter", "Figtree", ...defaultTheme.fontFamily.sans],
+                sans: ["Outfit", "Poppins", "Inter", ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 // Primary Colors - Deep Indigo/Purple

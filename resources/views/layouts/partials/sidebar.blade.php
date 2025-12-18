@@ -77,7 +77,7 @@
 
                 <!-- Jobs -->
                 <a 
-                    href="#" 
+                    href="{{ route('under-construction') }}" 
                     class="sidebar-link group {{ request()->routeIs('jobs.*') ? 'sidebar-link-active' : '' }}"
                     :class="!sidebarOpen ? 'justify-center px-2' : ''"
                 >
@@ -94,7 +94,7 @@
 
                 <!-- Applications -->
                 <a 
-                    href="#" 
+                    href="{{ route('under-construction') }}" 
                     class="sidebar-link group {{ request()->routeIs('applications.*') ? 'sidebar-link-active' : '' }}"
                     :class="!sidebarOpen ? 'justify-center px-2' : ''"
                 >
@@ -118,7 +118,7 @@
 
                 <!-- Companies -->
                 <a 
-                    href="#" 
+                    href="{{ route('under-construction') }}" 
                     class="sidebar-link group {{ request()->routeIs('companies.*') ? 'sidebar-link-active' : '' }}"
                     :class="!sidebarOpen ? 'justify-center px-2' : ''"
                 >
@@ -130,6 +130,23 @@
                         :class="sidebarOpen ? 'opacity-100' : 'opacity-0 hidden'"
                     >
                         Companies
+                    </span>
+                </a>
+
+                <!-- Users -->
+                <a 
+                    href="{{ route('users.index') }}" 
+                    class="sidebar-link group {{ request()->routeIs('users.*') ? 'sidebar-link-active' : '' }}"
+                    :class="!sidebarOpen ? 'justify-center px-2' : ''"
+                >
+                    <svg class="w-5 h-5 flex-shrink-0 {{ request()->routeIs('users.*') ? 'text-primary-400' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                    <span 
+                        class="transition-opacity duration-300"
+                        :class="sidebarOpen ? 'opacity-100' : 'opacity-0 hidden'"
+                    >
+                        Users
                     </span>
                 </a>
             </div>
@@ -147,7 +164,7 @@
             <div class="space-y-1">
                 <!-- Resume Builder -->
                 <a 
-                    href="#" 
+                    href="{{ route('under-construction') }}" 
                     class="sidebar-link group"
                     :class="!sidebarOpen ? 'justify-center px-2' : ''"
                 >
@@ -164,7 +181,7 @@
 
                 <!-- Cover Letters -->
                 <a 
-                    href="#" 
+                    href="{{ route('under-construction') }}" 
                     class="sidebar-link group"
                     :class="!sidebarOpen ? 'justify-center px-2' : ''"
                 >
@@ -181,7 +198,7 @@
 
                 <!-- Analytics -->
                 <a 
-                    href="#" 
+                    href="{{ route('under-construction') }}" 
                     class="sidebar-link group"
                     :class="!sidebarOpen ? 'justify-center px-2' : ''"
                 >
@@ -210,7 +227,7 @@
             <div class="space-y-1">
                 <!-- Settings -->
                 <a 
-                    href="#" 
+                    href="{{ route('under-construction') }}" 
                     class="sidebar-link group"
                     :class="!sidebarOpen ? 'justify-center px-2' : ''"
                 >
@@ -228,7 +245,7 @@
 
                 <!-- Help -->
                 <a 
-                    href="#" 
+                    href="{{ route('under-construction') }}" 
                     class="sidebar-link group"
                     :class="!sidebarOpen ? 'justify-center px-2' : ''"
                 >
