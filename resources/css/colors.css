@@ -1,0 +1,115 @@
+/*
+ * CareerOS Color System
+ * =====================
+ * Centralized color definitions for the entire application.
+ * These CSS custom properties are used throughout the project.
+ * 
+ * Usage in Tailwind: These are integrated via tailwind.config.js
+ * Usage in CSS: var(--color-primary-500)
+ */
+
+:root {
+    /* Primary Colors - Deep Indigo/Purple gradient */
+    --color-primary-50: 238 242 255; /* #EEF2FF */
+    --color-primary-100: 224 231 255; /* #E0E7FF */
+    --color-primary-200: 199 210 254; /* #C7D2FE */
+    --color-primary-300: 165 180 252; /* #A5B4FC */
+    --color-primary-400: 129 140 248; /* #818CF8 */
+    --color-primary-500: 99 102 241; /* #6366F1 - Main Primary */
+    --color-primary-600: 79 70 229; /* #4F46E5 */
+    --color-primary-700: 67 56 202; /* #4338CA */
+    --color-primary-800: 55 48 163; /* #3730A3 */
+    --color-primary-900: 49 46 129; /* #312E81 */
+    --color-primary-950: 30 27 75; /* #1E1B4B */
+
+    /* Secondary Colors - Teal/Cyan */
+    --color-secondary-50: 240 253 250; /* #F0FDFA */
+    --color-secondary-100: 204 251 241; /* #CCFBF1 */
+    --color-secondary-200: 153 246 228; /* #99F6E4 */
+    --color-secondary-300: 94 234 212; /* #5EEAD4 */
+    --color-secondary-400: 45 212 191; /* #2DD4BF */
+    --color-secondary-500: 20 184 166; /* #14B8A6 - Main Secondary */
+    --color-secondary-600: 13 148 136; /* #0D9488 */
+    --color-secondary-700: 15 118 110; /* #0F766E */
+    --color-secondary-800: 17 94 89; /* #115E59 */
+    --color-secondary-900: 19 78 74; /* #134E4A */
+    --color-secondary-950: 4 47 46; /* #042F2E */
+
+    /* Accent Colors - Coral/Orange for CTAs */
+    --color-accent-50: 255 247 237; /* #FFF7ED */
+    --color-accent-100: 255 237 213; /* #FFEDD5 */
+    --color-accent-200: 254 215 170; /* #FED7AA */
+    --color-accent-300: 253 186 116; /* #FDBA74 */
+    --color-accent-400: 251 146 60; /* #FB923C */
+    --color-accent-500: 249 115 22; /* #F97316 - Main Accent */
+    --color-accent-600: 234 88 12; /* #EA580C */
+    --color-accent-700: 194 65 12; /* #C2410C */
+    --color-accent-800: 154 52 18; /* #9A3412 */
+    --color-accent-900: 124 45 18; /* #7C2D12 */
+    --color-accent-950: 67 20 7; /* #431407 */
+
+    /* Success Colors - Emerald Green */
+    --color-success-50: 236 253 245; /* #ECFDF5 */
+    --color-success-100: 209 250 229; /* #D1FAE5 */
+    --color-success-200: 167 243 208; /* #A7F3D0 */
+    --color-success-300: 110 231 183; /* #6EE7B7 */
+    --color-success-400: 52 211 153; /* #34D399 */
+    --color-success-500: 16 185 129; /* #10B981 - Main Success */
+    --color-success-600: 5 150 105; /* #059669 */
+    --color-success-700: 4 120 87; /* #047857 */
+    --color-success-800: 6 95 70; /* #065F46 */
+    --color-success-900: 6 78 59; /* #064E3B */
+    --color-success-950: 2 44 34; /* #022C22 */
+
+    /* Warning Colors - Amber */
+    --color-warning-50: 255 251 235; /* #FFFBEB */
+    --color-warning-100: 254 243 199; /* #FEF3C7 */
+    --color-warning-200: 253 230 138; /* #FDE68A */
+    --color-warning-300: 252 211 77; /* #FCD34D */
+    --color-warning-400: 251 191 36; /* #FBBF24 */
+    --color-warning-500: 245 158 11; /* #F59E0B - Main Warning */
+    --color-warning-600: 217 119 6; /* #D97706 */
+    --color-warning-700: 180 83 9; /* #B45309 */
+    --color-warning-800: 146 64 14; /* #92400E */
+    --color-warning-900: 120 53 15; /* #78350F */
+    --color-warning-950: 69 26 3; /* #451A03 */
+
+    /* Danger Colors - Rose Red */
+    --color-danger-50: 255 241 242; /* #FFF1F2 */
+    --color-danger-100: 255 228 230; /* #FFE4E6 */
+    --color-danger-200: 254 205 211; /* #FECDD3 */
+    --color-danger-300: 253 164 175; /* #FDA4AF */
+    --color-danger-400: 251 113 133; /* #FB7185 */
+    --color-danger-500: 244 63 94; /* #F43F5E - Main Danger */
+    --color-danger-600: 225 29 72; /* #E11D48 */
+    --color-danger-700: 190 18 60; /* #BE123C */
+    --color-danger-800: 159 18 57; /* #9F1239 */
+    --color-danger-900: 136 19 55; /* #881337 */
+    --color-danger-950: 76 5 25; /* #4C0519 */
+
+    /* Neutral/Gray Colors - Slate */
+    --color-gray-50: 248 250 252; /* #F8FAFC */
+    --color-gray-100: 241 245 249; /* #F1F5F9 */
+    --color-gray-200: 226 232 240; /* #E2E8F0 */
+    --color-gray-300: 203 213 225; /* #CBD5E1 */
+    --color-gray-400: 148 163 184; /* #94A3B8 */
+    --color-gray-500: 100 116 139; /* #64748B */
+    --color-gray-600: 71 85 105; /* #475569 */
+    --color-gray-700: 51 65 85; /* #334155 */
+    --color-gray-800: 30 41 59; /* #1E293B */
+    --color-gray-900: 15 23 42; /* #0F172A */
+    --color-gray-950: 2 6 23; /* #020617 */
+
+    /* Dark Mode Background Colors */
+    --color-dark-bg: 17 24 39; /* #111827 - Main dark background */
+    --color-dark-card: 31 41 55; /* #1F2937 - Card/elevated surface */
+    --color-dark-border: 55 65 81; /* #374151 - Borders in dark mode */
+    --color-dark-hover: 55 65 81; /* #374151 - Hover states */
+
+    /* Sidebar specific colors */
+    --color-sidebar-bg: 17 24 39; /* #111827 */
+    --color-sidebar-hover: 31 41 55; /* #1F2937 */
+    --color-sidebar-active: 49 46 129; /* #312E81 */
+    --color-sidebar-text: 148 163 184; /* #94A3B8 */
+    --color-sidebar-text-active: 255 255 255; /* #FFFFFF */
+}
