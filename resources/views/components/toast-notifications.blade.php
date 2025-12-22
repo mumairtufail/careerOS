@@ -12,7 +12,7 @@
         }
     }"
     x-on:toast.window="add($event.detail.type, $event.detail.message)"
-    class="fixed bottom-4 right-4 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"
+    class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"
 >
     <!-- Initial Session Toasts -->
     @if(session('success'))
@@ -26,20 +26,20 @@
         x-transition:leave="transition ease-in duration-200"
         x-transition:leave-start="opacity-100 transform translate-x-0"
         x-transition:leave-end="opacity-0 transform translate-x-full"
-        class="pointer-events-auto bg-white dark:bg-gray-900 border border-success-200 dark:border-success-800 rounded-2xl shadow-2xl shadow-success-500/10 overflow-hidden"
+        class="pointer-events-auto bg-white dark:bg-gray-900 border border-success-200 dark:border-success-800 rounded-xl shadow-2xl shadow-success-500/10 overflow-hidden"
     >
-        <div class="flex items-start gap-4 p-4">
-            <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-success-400 to-success-500 rounded-xl flex items-center justify-center shadow-lg shadow-success-500/30">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="flex items-start gap-3 p-3">
+            <div class="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-success-400 to-success-500 rounded-lg flex items-center justify-center shadow-lg shadow-success-500/30">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                 </svg>
             </div>
             <div class="flex-1 min-w-0">
                 <p class="text-sm font-semibold text-gray-900 dark:text-white">Success!</p>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{{ session('success') }}</p>
+                <p class="mt-0.5 text-xs text-gray-600 dark:text-gray-400">{{ session('success') }}</p>
             </div>
             <button @click="show = false" class="flex-shrink-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
             </button>
@@ -59,20 +59,20 @@
         x-transition:leave="transition ease-in duration-200"
         x-transition:leave-start="opacity-100 transform translate-x-0"
         x-transition:leave-end="opacity-0 transform translate-x-full"
-        class="pointer-events-auto bg-white dark:bg-gray-900 border border-danger-200 dark:border-danger-800 rounded-2xl shadow-2xl shadow-danger-500/10 overflow-hidden"
+        class="pointer-events-auto bg-white dark:bg-gray-900 border border-danger-200 dark:border-danger-800 rounded-xl shadow-2xl shadow-danger-500/10 overflow-hidden"
     >
-        <div class="flex items-start gap-4 p-4">
-            <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-danger-400 to-danger-500 rounded-xl flex items-center justify-center shadow-lg shadow-danger-500/30">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="flex items-start gap-3 p-3">
+            <div class="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-danger-400 to-danger-500 rounded-lg flex items-center justify-center shadow-lg shadow-danger-500/30">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
             </div>
             <div class="flex-1 min-w-0">
                 <p class="text-sm font-semibold text-gray-900 dark:text-white">Error!</p>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{{ session('error') }}</p>
+                <p class="mt-0.5 text-xs text-gray-600 dark:text-gray-400">{{ session('error') }}</p>
             </div>
             <button @click="show = false" class="flex-shrink-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
             </button>
@@ -92,11 +92,11 @@
         x-transition:leave="transition ease-in duration-200"
         x-transition:leave-start="opacity-100 transform translate-x-0"
         x-transition:leave-end="opacity-0 transform translate-x-full"
-        class="pointer-events-auto bg-white dark:bg-gray-900 border border-warning-200 dark:border-warning-800 rounded-2xl shadow-2xl shadow-warning-500/10 overflow-hidden"
+        class="pointer-events-auto bg-white dark:bg-gray-900 border border-warning-200 dark:border-warning-800 rounded-xl shadow-2xl shadow-warning-500/10 overflow-hidden"
     >
-        <div class="flex items-start gap-4 p-4">
-            <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-warning-400 to-warning-500 rounded-xl flex items-center justify-center shadow-lg shadow-warning-500/30">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="flex items-start gap-3 p-3">
+            <div class="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-warning-400 to-warning-500 rounded-lg flex items-center justify-center shadow-lg shadow-warning-500/30">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                 </svg>
             </div>

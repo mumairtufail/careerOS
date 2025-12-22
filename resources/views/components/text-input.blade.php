@@ -29,7 +29,7 @@
 
     <div class="relative">
         @if(isset($icon_slot) || $icon)
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 @if(isset($icon_slot))
                     {{ $icon_slot }}
                 @else

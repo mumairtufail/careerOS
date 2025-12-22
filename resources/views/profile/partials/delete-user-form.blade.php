@@ -1,5 +1,5 @@
-<section class="space-y-6">
-    <div class="p-4 bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-800 rounded-xl">
+<section class="space-y-4">
+    <div class="p-3 bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-800 rounded-lg">
         <div class="flex items-start gap-3">
             <svg class="w-5 h-5 text-danger-600 dark:text-danger-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
@@ -23,10 +23,10 @@
     </button>
 
     <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
-        <div class="p-6">
-            <div class="flex items-center gap-4 mb-6">
-                <div class="w-12 h-12 bg-danger-100 dark:bg-danger-900/50 rounded-full flex items-center justify-center flex-shrink-0">
-                    <svg class="w-6 h-6 text-danger-600 dark:text-danger-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="p-4">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-10 h-10 bg-danger-100 dark:bg-danger-900/50 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-danger-600 dark:text-danger-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                     </svg>
                 </div>
@@ -44,7 +44,7 @@
                 @csrf
                 @method('delete')
 
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
                     {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
                 </p>
 

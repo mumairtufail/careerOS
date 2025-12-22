@@ -33,9 +33,9 @@
                 <div class="absolute top-1/2 left-1/3 w-64 h-64 bg-accent-500/20 rounded-full blur-3xl animate-pulse-slow delay-500"></div>
                 
                 <!-- Content -->
-                <div class="relative z-10 flex flex-col justify-center px-16 xl:px-24">
+                <div class="relative z-10 flex flex-col justify-center px-12 xl:px-16">
                     <!-- Logo -->
-                    <div class="mb-12">
+                    <div class="mb-8">
                         <h1 class="text-4xl font-bold text-white mb-2">
                             <span class="bg-gradient-to-r from-primary-400 via-secondary-400 to-accent-400 bg-clip-text text-transparent">
                                 CareerOS
@@ -45,51 +45,51 @@
                     </div>
                     
                     <!-- Features -->
-                    <div class="space-y-8">
+                    <div class="space-y-6">
                         <div class="flex items-start gap-4">
-                            <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="text-white font-semibold text-lg mb-1">AI-Powered Job Matching</h3>
+                                <h3 class="text-white font-semibold text-base mb-1">AI-Powered Job Matching</h3>
                                 <p class="text-gray-400 text-sm leading-relaxed">Get matched with jobs that fit your skills and preferences automatically.</p>
                             </div>
                         </div>
 
                         <div class="flex items-start gap-4">
-                            <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl flex items-center justify-center shadow-lg shadow-secondary-500/30">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl flex items-center justify-center shadow-lg shadow-secondary-500/30">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="text-white font-semibold text-lg mb-1">Smart Application Tracking</h3>
+                                <h3 class="text-white font-semibold text-base mb-1">Smart Application Tracking</h3>
                                 <p class="text-gray-400 text-sm leading-relaxed">Keep track of all your applications in one organized dashboard.</p>
                             </div>
                         </div>
 
                         <div class="flex items-start gap-4">
-                            <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-accent-500 to-accent-600 rounded-xl flex items-center justify-center shadow-lg shadow-accent-500/30">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-accent-500 to-accent-600 rounded-xl flex items-center justify-center shadow-lg shadow-accent-500/30">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="text-white font-semibold text-lg mb-1">Analytics & Insights</h3>
+                                <h3 class="text-white font-semibold text-base mb-1">Analytics & Insights</h3>
                                 <p class="text-gray-400 text-sm leading-relaxed">Understand your job search patterns and optimize your strategy.</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Testimonial -->
-                    <div class="mt-16 p-6 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10">
+                    <div class="mt-10 p-5 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10">
                         <p class="text-gray-300 italic text-sm leading-relaxed mb-4">
                             "CareerOS helped me land my dream job at a top tech company in just 3 weeks. The AI matching is incredibly accurate!"
                         </p>
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-gradient-to-br from-primary-400 to-secondary-400 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                            <div class="w-8 h-8 bg-gradient-to-br from-primary-400 to-secondary-400 rounded-full flex items-center justify-center text-white font-semibold text-xs">
                                 JD
                             </div>
                             <div>
@@ -102,10 +102,10 @@
             </div>
 
             <!-- Right Side - Auth Form -->
-            <div class="w-full lg:w-1/2 flex items-center justify-center p-8">
+            <div class="w-full lg:w-1/2 flex items-center justify-center p-6">
                 <div class="w-full max-w-md">
                     <!-- Mobile Logo -->
-                    <div class="lg:hidden text-center mb-10">
+                    <div class="lg:hidden text-center mb-6">
                         <h1 class="text-3xl font-bold">
                             <span class="bg-gradient-to-r from-primary-400 via-secondary-400 to-accent-400 bg-clip-text text-transparent">
                                 CareerOS
@@ -115,12 +115,12 @@
                     </div>
 
                     <!-- Auth Card -->
-                    <div class="bg-gray-900/50 backdrop-blur-xl rounded-3xl border border-gray-800 p-8 shadow-2xl">
+                    <div class="bg-gray-900/50 backdrop-blur-xl rounded-3xl border border-gray-800 p-6 shadow-2xl">
                         {{ $slot }}
                     </div>
 
                     <!-- Footer -->
-                    <p class="mt-8 text-center text-gray-500 text-sm">
+                    <p class="mt-6 text-center text-gray-500 text-sm">
                         © {{ date('Y') }} CareerOS. All rights reserved.
                     </p>
                 </div>

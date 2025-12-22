@@ -1,5 +1,5 @@
 <section>
-    <form method="post" action="{{ route('password.update') }}" class="space-y-6">
+    <form method="post" action="{{ route('password.update') }}" class="space-y-4">
         @csrf
         @method('put')
 
@@ -12,10 +12,10 @@
                 class="input"
                 autocomplete="current-password"
             >
-            <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
+            <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-1" />
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
                 <label for="update_password_password" class="form-label">{{ __('New Password') }}</label>
                 <input 
@@ -25,8 +25,8 @@
                     class="input"
                     autocomplete="new-password"
                 >
-                <p class="mt-1.5 text-xs text-gray-500 dark:text-gray-400">Minimum 8 characters</p>
-                <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Minimum 8 characters</p>
+                <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-1" />
             </div>
 
             <div>
@@ -38,11 +38,11 @@
                     class="input"
                     autocomplete="new-password"
                 >
-                <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
+                <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-1" />
             </div>
         </div>
 
-        <div class="flex items-center gap-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+        <div class="flex items-center gap-4 pt-3 border-t border-gray-100 dark:border-gray-800">
             <button type="submit" class="btn-primary">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>

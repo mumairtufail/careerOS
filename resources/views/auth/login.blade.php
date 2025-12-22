@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="text-center mb-8">
+    <div class="text-center mb-6">
         <h2 class="text-2xl font-bold text-white mb-2">Welcome back</h2>
         <p class="text-gray-400">Sign in to continue to your dashboard</p>
     </div>
@@ -7,14 +7,14 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}" class="space-y-6">
+    <form method="POST" action="{{ route('login') }}" class="space-y-4">
         @csrf
 
         <!-- Email Address -->
         <div>
             <label for="email" class="form-label text-gray-300">Email Address</label>
             <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
                     </svg>
@@ -24,19 +24,19 @@
                     type="email" 
                     name="email" 
                     value="{{ old('email') }}"
-                    class="input pl-12 bg-gray-800/50 border-gray-700 text-white placeholder-gray-500 focus:border-primary-500 focus:ring-primary-500"
+                    class="input pl-10 bg-gray-800/50 border-gray-700 text-white placeholder-gray-500 focus:border-primary-500 focus:ring-primary-500"
                     placeholder="you@example.com"
                     required 
                     autofocus 
                     autocomplete="username"
                 >
             </div>
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <x-input-error :messages="$errors->get('email')" class="mt-1" />
         </div>
 
         <!-- Password -->
         <div>
-            <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center justify-between mb-1">
                 <label for="password" class="form-label text-gray-300 mb-0">Password</label>
                 @if (Route::has('password.request'))
                     <a href="{{ route('password.request') }}" class="text-sm text-primary-400 hover:text-primary-300 transition-colors">
@@ -45,7 +45,7 @@
                 @endif
             </div>
             <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                     </svg>
@@ -54,17 +54,17 @@
                     id="password"
                     type="password"
                     name="password"
-                    class="input pl-12 bg-gray-800/50 border-gray-700 text-white placeholder-gray-500 focus:border-primary-500 focus:ring-primary-500"
+                    class="input pl-10 bg-gray-800/50 border-gray-700 text-white placeholder-gray-500 focus:border-primary-500 focus:ring-primary-500"
                     placeholder="••••••••"
                     required 
                     autocomplete="current-password"
                 >
             </div>
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <x-input-error :messages="$errors->get('password')" class="mt-1" />
         </div>
 
         <!-- Remember Me -->
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2">
             <input 
                 id="remember_me" 
                 type="checkbox" 
@@ -77,7 +77,7 @@
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" class="btn-primary w-full py-3.5 text-base">
+        <button type="submit" class="btn-primary w-full py-2.5 text-base">
             <span>Sign in</span>
             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
@@ -85,13 +85,13 @@
         </button>
 
         <!-- Divider -->
-        <div class="divider text-gray-500">
+        <div class="divider text-gray-500 my-4">
             <span>or continue with</span>
         </div>
 
         <!-- Social Login -->
-        <div class="grid grid-cols-2 gap-4">
-            <button type="button" class="btn-secondary flex items-center justify-center gap-2 py-3 border-gray-700 hover:border-gray-600 text-gray-300">
+        <div class="grid grid-cols-2 gap-3">
+            <button type="button" class="btn-secondary flex items-center justify-center gap-2 py-2 border-gray-700 hover:border-gray-600 text-gray-300">
                 <svg class="w-5 h-5" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                     <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
