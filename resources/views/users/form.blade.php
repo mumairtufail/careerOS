@@ -1,24 +1,18 @@
 <x-app-layout>
-    <div class="max-w-5xl mx-auto">
-        <!-- Header -->
-        <div class="flex items-center justify-between mb-6">
-            <div>
-                <h1 class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
-                    {{ $isEdit ? 'Edit User' : 'Create User' }}
-                </h1>
-                <p class="text-sm text-gray-500">
-                    {{ $isEdit ? 'Update user information and permissions.' : 'Add a new team member to the workspace.' }}
-                </p>
-            </div>
-            <a href="{{ route('users.index') }}" class="text-sm font-medium text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors">
-                ← Back to Users
-            </a>
-        </div>
+    <x-page-header 
+        :title="$isEdit ? 'Edit User' : 'Create User'"
+        :description="$isEdit ? 'Update user information and permissions.' : 'Add a new team member to the workspace.'"
+        :breadcrumbs="[
+            ['label' => 'Dashboard', 'url' => route('dashboard')],
+            ['label' => 'Users', 'url' => route('users.index')],
+            ['label' => $isEdit ? 'Edit User' : 'Create User'],
+        ]"
+    />
 
-        <form 
-            method="POST" 
+    <form 
+        method="POST" 
             action="{{ $isEdit ? route('users.update', $user) : route('users.store') }}"
-            class="space-y-8"
+            class="space-y-4"
         >
             @csrf
             @if($isEdit)

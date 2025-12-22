@@ -39,6 +39,8 @@ Objective: Maintain strict code consistency, modularity, and "Atomic Design" pri
 
     LAYOUT:
 
+    - <x-page-header> - Standard header with breadcrumbs, title, and actions
+    - <x-table-container> - Standard wrapper for data tables
     - <x-breadcrumbs> - Navigation breadcrumbs with home icon
     - <x-modal> - Modal dialogs with Alpine.js
     - <x-toast-notifications> - Flash message notifications
@@ -177,6 +179,38 @@ Objective: Maintain strict code consistency, modularity, and "Atomic Design" pri
 
     Dark mode is handled via localStorage and persists across page loads.
     Toggle is in the navbar - uses sun/moon icons.
+
+    F. Standard Page Layout (REQUIRED)
+
+    All index/list pages MUST use this structure to ensure consistency:
+
+    ```blade
+    <x-app-layout>
+        <x-page-header 
+            title="Module Title" 
+            description="Manage your items here."
+            :breadcrumbs="[['label' => 'Module Name']]"
+        >
+            <x-slot name="actions">
+                <!-- Search Forms or Action Buttons -->
+                <a href="{{ route('module.create') }}" class="btn-primary">
+                    Add Item
+                </a>
+            </x-slot>
+        </x-page-header>
+
+        <x-table-container>
+            <table class="w-full text-left text-sm">
+                <thead>
+                    <!-- Headers -->
+                </thead>
+                <tbody>
+                    <!-- Data -->
+                </tbody>
+            </table>
+        </x-table-container>
+    </x-app-layout>
+    ```
 
 4. UI/UX Guidelines
 

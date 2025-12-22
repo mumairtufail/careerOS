@@ -6,7 +6,6 @@ use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Log Channel
@@ -51,7 +50,6 @@ return [
     */
 
     'channels' => [
-
         'stack' => [
             'driver' => 'stack',
             'channels' => explode(',', env('LOG_STACK', 'single')),
@@ -127,6 +125,29 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
-    ],
+        // Custom Module Channels
+        'resumes' => [
+            'driver' => 'monolog',
+            'handler' => App\Logging\DatabaseHandler::class,
+            'level' => 'debug',
+        ],
 
+        'ai' => [
+            'driver' => 'monolog',
+            'handler' => App\Logging\DatabaseHandler::class,
+            'level' => 'debug',
+        ],
+
+        'applications' => [
+            'driver' => 'monolog',
+            'handler' => App\Logging\DatabaseHandler::class,
+            'level' => 'debug',
+        ],
+
+        'system' => [
+            'driver' => 'monolog',
+            'handler' => App\Logging\DatabaseHandler::class,
+            'level' => 'debug',
+        ],
+    ],
 ];

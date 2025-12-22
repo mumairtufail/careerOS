@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" 
     x-data="{ 
-        darkMode: localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        darkMode: localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches),
+        sidebarMobileOpen: false
     }" 
     x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" 
     :class="{ 'dark': darkMode }"
@@ -35,12 +36,7 @@
         </style>
     </head>
     <body class="font-sans antialiased bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
-        <div 
-            x-data="{ 
-                sidebarMobileOpen: false
-            }" 
-            class="min-h-screen flex"
-        >
+        <div class="min-h-screen flex">
             
             <!-- Sidebar (Fixed) -->
             @include('layouts.partials.sidebar')
@@ -69,5 +65,6 @@
         </div>
 
         <x-toast-notifications />
+        <x-confirm-modal />
     </body>
 </html>
