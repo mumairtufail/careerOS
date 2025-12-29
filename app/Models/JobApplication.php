@@ -12,7 +12,7 @@ class JobApplication extends Model
     protected $fillable = [
         'user_id', 'job_stage_id', 'company_name', 'job_title', 
         'job_url', 'location', 'work_mode', 'salary_min', 
-        'salary_max', 'applied_at', 'notes'
+        'salary_max', 'applied_at', 'notes', 'job_description'
     ];
 
     protected $casts = [
@@ -32,5 +32,15 @@ class JobApplication extends Model
     public function activities()
     {
         return $this->hasMany(JobActivity::class)->orderBy('created_at', 'desc');
+    }
+
+    public function resumeMatches()
+    {
+        return $this->hasMany(ResumeJobMatch::class);
+    }
+
+    public function latestMatch()
+    {
+        return $this->hasOne(ResumeJobMatch::class)->latestOfMany();
     }
 }

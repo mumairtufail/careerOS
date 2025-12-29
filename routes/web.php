@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
 
     // Job Applications Routes
     Route::resource('job-applications', JobApplicationController::class);
+    Route::post('/job-applications/{jobApplication}/analyze-match', [JobApplicationController::class, 'analyzeMatch'])->name('job-applications.analyze-match');
 
     // Job Stages Routes
     Route::resource('job-stages', JobStageController::class)->except(['show']);

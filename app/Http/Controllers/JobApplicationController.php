@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\JobApplication;
 use App\Models\JobStage;
+use App\Models\Resume;
+use App\Services\ResumeJobMatchingService;
 use App\Http\Requests\StoreJobApplicationRequest;
 use App\Http\Requests\UpdateJobApplicationRequest;
 use Illuminate\Http\Request;
@@ -62,7 +64,16 @@ class JobApplicationController extends Controller
     public function show(JobApplication $jobApplication)
     {
         $this->authorize('view', $jobApplication);
-        return view('job-applications.show', compact('jobApplication'));
+        
+        // Load relationships
+        $jobApplication->load(['stage', 'activities', 'latestMatch.resume']);
+        
+        // Get user's resumes for match analysis
+        $resumes = Resume::where('user_id', auth()->id())
+            ->where('parse_status', 'success')
+            ->get();
+        
+        return view('job-applications.show', compact('jobApplication', 'resumes'));
     }
 
     /**
@@ -97,5 +108,30 @@ class JobApplicationController extends Controller
         $this->authorize('delete', $jobApplication);
         $jobApplication->delete();
         return redirect()->route('job-applications.index')->with('success', 'Job application deleted successfully.');
+    }
+
+    /**
+     * Analyze resume match for this job application
+     */
+    public function analyzeMatch(Request $request, JobApplication $jobApplication, ResumeJobMatchingService $matchingService)
+    {
+        $this->authorize('update', $jobApplication);
+
+        $request->validate([
+            'resume_id' => 'required|exists:resumes,id'
+        ]);
+
+        $resume = Resume::where('id', $request->resume_id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        try {
+            $forceReanalyze = $request->boolean('force', false);
+            $match = $matchingService->analyzeMatch($resume, $jobApplication, $forceReanalyze);
+
+            return back()->with('success', 'Match analysis completed successfully. Score: ' . $match->match_score);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Match analysis failed: ' . $e->getMessage());
+        }
     }
 }

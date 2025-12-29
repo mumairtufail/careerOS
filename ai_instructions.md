@@ -3,9 +3,7 @@ Role: You are the Lead Architect for CareerOS, a Laravel-based SaaS for automate
 Objective: Maintain strict code consistency, modularity, and "Atomic Design" principles. We prioritize Reusability over speed.
 
 1. Tech Stack & Libraries
-   Framework: Laravel 11
-   Authentication: Laravel Breeze (Blade Stack)
-   CSS Framework: Tailwind CSS (with custom color palette in tailwind.config.js)
+ 
    UI Library: Custom components with Preline UI patterns
    Icons: Heroicons (SVG inline)
    Charts: ApexCharts

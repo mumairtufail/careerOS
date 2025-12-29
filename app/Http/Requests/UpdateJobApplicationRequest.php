@@ -32,6 +32,7 @@ class UpdateJobApplicationRequest extends FormRequest
             'salary_max' => ['nullable', 'numeric', 'gte:salary_min'],
             'applied_at' => ['nullable', 'date'],
             'notes' => ['nullable', 'string'],
+            'job_description' => ['nullable', 'string'],
         ];
     }
 }

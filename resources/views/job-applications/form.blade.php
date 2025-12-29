@@ -138,6 +138,31 @@
                 >{{ old('notes', $jobApplication->notes ?? '') }}</textarea>
             </x-form-section>
 
+            <!-- Job Description (for AI matching) -->
+            <x-form-section 
+                title="Job Description" 
+                description="Paste the full job description for AI-powered resume matching analysis."
+            >
+                <div class="space-y-2">
+                    <textarea 
+                        name="job_description" 
+                        rows="12" 
+                        class="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-shadow font-mono"
+                        placeholder="Paste the full job description here...
+
+We are looking for a Senior Laravel Developer...
+Required Skills:
+- 5+ years PHP/Laravel experience
+- Vue.js or React
+- MySQL/PostgreSQL
+..."
+                    >{{ old('job_description', $jobApplication->job_description ?? '') }}</textarea>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                        💡 Tip: Include requirements, responsibilities, and qualifications for better match analysis.
+                    </p>
+                </div>
+            </x-form-section>
+
             <!-- Activity Timeline (Only in Edit Mode) -->
             @if($isEdit)
                 <x-form-section 
@@ -158,5 +183,4 @@
                 </button>
             </div>
         </form>
-    </div>
 </x-app-layout>

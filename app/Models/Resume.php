@@ -36,6 +36,11 @@ class Resume extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function jobMatches()
+    {
+        return $this->hasMany(ResumeJobMatch::class);
+    }
+
     // Helper methods for parse status
     public function isParsed(): bool
     {
