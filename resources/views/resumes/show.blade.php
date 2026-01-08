@@ -1,4 +1,5 @@
 <x-app-layout>
+    <div data-parsed-content="{{ htmlspecialchars($resume->parsed_content) }}"></div>
     <x-page-header 
         :title="$resume->title" 
         description="Parsed resume details."

@@ -8,12 +8,24 @@
         ]"
     >
         <x-slot name="actions">
-            <a href="{{ route('resumes.create') }}" class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700 focus:bg-primary-700 active:bg-primary-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                </svg>
-                Upload Resume
-            </a>
+            <div class="flex items-center gap-3">
+                <button 
+                    @click.prevent="$dispatch('open-resume-builder'); console.log('Button clicked, event dispatched')"
+                    type="button"
+                    class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-600 to-primary-700 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:from-primary-700 hover:to-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-150 shadow-lg shadow-primary-500/20"
+                >
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                    </svg>
+                    Create ATS Resume
+                </button>
+                <a href="{{ route('resumes.create') }}" class="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Upload Resume
+                </a>
+            </div>
         </x-slot>
     </x-page-header>
 
@@ -137,8 +149,18 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $resume->title }}</div>
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">{{ basename($resume->file_path) }}</div>
+                                        <div class="flex items-center gap-2">
+                                            <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $resume->title }}</div>
+                                            @if($resume->source === 'builder')
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-gradient-to-r from-primary-100 to-secondary-100 dark:from-primary-900/30 dark:to-secondary-900/30 text-primary-700 dark:text-primary-400 border border-primary-300 dark:border-primary-700">
+                                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                                                    </svg>
+                                                    AI Built
+                                                </span>
+                                            @endif
+                                        </div>
+                                        <div class="text-sm text-gray-500 dark:text-gray-400">{{ basename($resume->file_path ?? 'No file') }}</div>
                                     </div>
                                 </div>
                             </td>
@@ -187,6 +209,49 @@
                                             Re-parse
                                         </button>
                                     @endif
+
+                                    <!-- Download Button (for all resumes with file_path) -->
+                                    @if($resume->file_path)
+                                        <a 
+                                            href="{{ route('resumes.download', $resume) }}" 
+                                            class="inline-flex items-center text-secondary-600 dark:text-secondary-400 hover:text-secondary-900 dark:hover:text-secondary-300 transition"
+                                            title="Download PDF"
+                                        >
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                                            </svg>
+                                            Download
+                                        </a>
+                                    @endif
+
+                                    <!-- Regenerate Button (only for builder resumes) -->
+                                    @if($resume->source === 'builder')
+                                        <button 
+                                            type="button"
+                                            @click='$dispatch("open-resume-builder", {!! $resume->parsed_content !!})'
+                                            class="inline-flex items-center text-accent-600 dark:text-accent-400 hover:text-accent-900 dark:hover:text-accent-300 transition"
+                                            title="Edit Resume"
+                                        >
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                            </svg>
+                                            Edit
+                                        </button>
+                                        
+                                        <form action="{{ route('resumes.regenerate', $resume) }}" method="POST" class="inline">
+                                            @csrf
+                                            <button 
+                                                type="submit"
+                                                class="inline-flex items-center text-accent-600 dark:text-accent-400 hover:text-accent-900 dark:hover:text-accent-300 transition"
+                                                title="Regenerate PDF"
+                                            >
+                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                                </svg>
+                                                Regenerate
+                                            </button>
+                                        </form>
+                                    @endif
                                     
                                     <a 
                                         href="{{ route('resumes.show', $resume) }}" 
@@ -219,7 +284,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-6 py-12 text-center">
+                            <td colspan="5" class="px-6 py-12 text-center">
                                 <div class="flex flex-col items-center justify-center">
                                     <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4">
                                         <svg class="w-8 h-8 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -450,6 +515,9 @@
             @csrf
         </form>
     @endforeach
+
+    <!-- Resume Builder Modal -->
+    <x-resume-builder-modal />
 
     <style>
         [x-cloak] { display: none !important; }

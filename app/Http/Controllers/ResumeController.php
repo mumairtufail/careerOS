@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Resume;
 use App\Services\ResumeParserService;
+use App\Services\ResumeContentEnhancerService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Traits\HasModuleLogger;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ResumeController extends Controller
 {
@@ -15,10 +17,12 @@ class ResumeController extends Controller
 
     protected $logChannel = 'resumes';
     protected $parser;
+    protected $enhancer;
 
-    public function __construct(ResumeParserService $parser)
+    public function __construct(ResumeParserService $parser, ResumeContentEnhancerService $enhancer)
     {
         $this->parser = $parser;
+        $this->enhancer = $enhancer;
     }
 
     /**
@@ -228,6 +232,253 @@ class ResumeController extends Controller
             ]);
 
             return back()->with('error', 'Re-parsing failed: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Store resume created from builder.
+     */
+    public function storeFromBuilder(Request $request)
+    {
+        $request->validate([
+            'data' => 'required|json',
+            'action' => 'required|in:save_draft,download_pdf'
+        ]);
+
+        $data = json_decode($request->data, true);
+
+        // Validate essential fields
+        if (!isset($data['template']) || !isset($data['personal'])) {
+            return response()->json(['error' => 'Missing required data'], 422);
+        }
+
+        $personal = $data['personal'];
+
+        try {
+            // Generate PDF
+            $pdfPath = null;
+            $shouldGeneratePdf = $request->action === 'download_pdf';
+
+            if ($shouldGeneratePdf) {
+                $template = $data['template'] ?? 'professional';
+                
+                // Ensure template exists, fallback if needed
+                if (!view()->exists("resumes.templates.{$template}")) {
+                    $template = 'minimal';
+                }
+
+                $pdf = Pdf::loadView("resumes.templates.{$template}", ['data' => $data]);
+                
+                // Save PDF to storage (Public disk to match other parts of the system)
+                $fileName = 'resume_' . auth()->id() . '_' . time() . '.pdf';
+                $pdfPath = 'resumes/' . $fileName;
+                Storage::disk('public')->put($pdfPath, $pdf->output());
+            }
+
+            // Parse skills from text
+            $skills = [];
+            if (!empty($data['skills_text'])) {
+                $skills = array_map('trim', preg_split('/[,\n]+/', $data['skills_text']));
+                $skills = array_filter($skills);
+            }
+
+            // Calculate years of experience from experience array
+            $yearsOfExperience = 0;
+            if (!empty($data['experience'])) {
+                foreach ($data['experience'] as $exp) {
+                    if (!empty($exp['start_year'])) {
+                        $endYear = $exp['currently_working'] ? date('Y') : ($exp['end_year'] ?? date('Y'));
+                        $yearsOfExperience += max(0, $endYear - $exp['start_year']);
+                    }
+                }
+            }
+
+            // Create resume record
+            $resume = auth()->user()->resumes()->create([
+                'title' => $personal['full_name'] . ' - ' . ($personal['professional_title'] ?? 'Resume'),
+                'file_path' => $pdfPath,
+                'parsed_content' => json_encode($data),
+                'summary' => $personal['professional_summary'] ?? null,
+                'skills' => $skills,
+                'experience' => $data['experience'] ?? [],
+                'years_of_experience' => $yearsOfExperience,
+                'education' => $data['education'] ?? [],
+                'projects' => [], // Store text-based projects
+                'certifications' => [], // Store text-based certifications
+                'parse_status' => $request->action === 'save_draft' ? 'pending' : 'success',
+                'parse_error' => null,
+                'source' => 'builder',
+            ]);
+
+            $this->logInfo('Resume created from builder', [
+                'resume_id' => $resume->id,
+                'action' => $request->action,
+                'template' => $data['template']
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'resume_id' => $resume->id,
+                'message' => $request->action === 'save_draft' 
+                    ? 'Resume draft saved successfully.' 
+                    : 'Resume created successfully.'
+            ]);
+
+        } catch (\Exception $e) {
+            $this->logError('Resume builder submission failed', [
+                'error' => $e->getMessage(),
+                'data' => $data
+            ]);
+
+            return response()->json([
+                'error' => 'Failed to create resume: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Calculate total years of experience from experience array.
+     */
+    private function calculateYearsOfExperience(array $experiences): ?int
+    {
+        if (empty($experiences)) {
+            return null;
+        }
+
+        $totalMonths = 0;
+        foreach ($experiences as $exp) {
+            if (isset($exp['start_date']) && isset($exp['end_date'])) {
+                try {
+                    $start = new \DateTime($exp['start_date']);
+                    $end = $exp['currently_working'] ?? false 
+                        ? new \DateTime() 
+                        : new \DateTime($exp['end_date']);
+                    $diff = $start->diff($end);
+                    $totalMonths += ($diff->y * 12) + $diff->m;
+                } catch (\Exception $e) {
+                    continue;
+                }
+            }
+        }
+
+        return (int) round($totalMonths / 12);
+    }
+
+    /**
+     * Download resume PDF.
+     */
+    public function download(Resume $resume)
+    {
+        $this->authorize('view', $resume);
+
+        if (!$resume->file_path) {
+            return back()->with('error', 'Resume file path missing.');
+        }
+
+        // Check Public disk first (standard storage)
+        if (Storage::disk('public')->exists($resume->file_path)) {
+             return Storage::disk('public')->download(
+                $resume->file_path,
+                ($resume->title ?? 'resume') . '.pdf'
+            );
+        }
+
+        // Check Local disk (legacy/fallback)
+        if (Storage::disk('local')->exists($resume->file_path)) {
+            return Storage::disk('local')->download(
+                $resume->file_path,
+                ($resume->title ?? 'resume') . '.pdf'
+            );
+        }
+
+        return back()->with('error', 'Resume file not found.');
+    }
+
+    /**
+     * Regenerate PDF from builder data.
+     */
+    public function regenerate(Resume $resume)
+    {
+        $this->authorize('update', $resume);
+
+        if ($resume->source !== 'builder') {
+            return back()->with('error', 'Only builder resumes can be regenerated.');
+        }
+
+        try {
+            $data = json_decode($resume->parsed_content, true);
+            $template = $data['template'] ?? 'professional';
+            
+             // Ensure template exists, fallback if needed
+            if (!view()->exists("resumes.templates.{$template}")) {
+                $template = 'minimal';
+            }
+
+            $pdf = Pdf::loadView("resumes.templates.{$template}", ['data' => $data]);
+            
+            // Delete old PDF if exists (check both disks)
+            if ($resume->file_path) {
+                if (Storage::disk('public')->exists($resume->file_path)) {
+                    Storage::disk('public')->delete($resume->file_path);
+                } elseif (Storage::disk('local')->exists($resume->file_path)) {
+                    Storage::disk('local')->delete($resume->file_path);
+                }
+            }
+            
+            // Save new PDF to public disk
+            $fileName = 'resume_' . auth()->id() . '_' . time() . '.pdf';
+            $pdfPath = 'resumes/' . $fileName;
+            Storage::disk('public')->put($pdfPath, $pdf->output());
+            
+            $resume->update(['file_path' => $pdfPath]);
+
+            $this->logInfo('Resume regenerated', ['resume_id' => $resume->id]);
+
+            return back()->with('success', 'Resume regenerated successfully!');
+        } catch (\Exception $e) {
+            $this->logError('Failed to regenerate resume', [
+                'resume_id' => $resume->id,
+                'error' => $e->getMessage()
+            ]);
+
+            return back()->with('error', 'Failed to regenerate resume.');
+        }
+    }
+
+    /**
+     * Enhance resume content using AI.
+     */
+    public function enhanceContent(Request $request)
+    {
+        $request->validate([
+            'content' => 'required|string',
+            'section' => 'required|string|in:professional_summary,skills,experience,education,certifications,projects'
+        ]);
+
+        $result = $this->enhancer->enhanceContent(
+            $request->content,
+            $request->section
+        );
+
+        return response()->json($result);
+    }
+
+    /**
+     * Generate HTML preview for resume builder.
+     */
+    public function preview(Request $request)
+    {
+        $request->validate([
+            'data' => 'required|json',
+        ]);
+
+        $data = json_decode($request->data, true);
+        $template = $data['template'] ?? 'professional';
+
+        try {
+            return view("resumes.templates.{$template}", ['data' => $data]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Template not found'], 404);
         }
     }
 }

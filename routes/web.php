@@ -37,6 +37,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('resumes', ResumeController::class);
     Route::post('/resumes/bulk-destroy', [ResumeController::class, 'bulkDestroy'])->name('resumes.bulk-destroy');
     Route::post('/resumes/{resume}/re-parse', [ResumeController::class, 'reParse'])->name('resumes.re-parse');
+    Route::post('/resumes/builder/store', [ResumeController::class, 'storeFromBuilder'])->name('resumes.builder.store');
+    Route::post('/resumes/builder/enhance', [ResumeController::class, 'enhanceContent'])->name('resumes.builder.enhance');
+    Route::post('/resumes/builder/preview', [ResumeController::class, 'preview'])->name('resumes.builder.preview');
+    Route::get('/resumes/{resume}/download', [ResumeController::class, 'download'])->name('resumes.download');
+    Route::post('/resumes/{resume}/regenerate', [ResumeController::class, 'regenerate'])->name('resumes.regenerate');
 
     // AI Configuration Routes
     Route::resource('ai-configurations', AiConfigurationController::class);

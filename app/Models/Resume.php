@@ -21,6 +21,7 @@ class Resume extends Model
         'certifications',
         'parse_status',
         'parse_error',
+        'source',
     ];
 
     protected $casts = [
