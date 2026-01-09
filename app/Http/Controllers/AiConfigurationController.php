@@ -90,7 +90,7 @@ class AiConfigurationController extends Controller
 
         // Deactivate all others
         auth()->user()->aiConfigurations()->update(['is_active' => false]);
-        
+
         // Activate this one
         $aiConfiguration->update(['is_active' => true]);
 
@@ -110,6 +110,10 @@ class AiConfigurationController extends Controller
         try {
             if ($request->provider === 'gemini') {
                 return $this->fetchGeminiModels($request->api_key);
+            }
+
+            if ($request->provider === 'openai') {
+                return $this->fetchOpenAIModels($request->api_key);
             }
 
             return response()->json([
@@ -142,7 +146,7 @@ class AiConfigurationController extends Controller
             ]);
 
             $data = json_decode($response->getBody()->getContents(), true);
-            
+
             if (!isset($data['models'])) {
                 throw new \Exception('Invalid response from Gemini API');
             }
@@ -150,7 +154,7 @@ class AiConfigurationController extends Controller
             // Filter models that support generateContent
             $models = collect($data['models'])
                 ->filter(function ($model) {
-                    return isset($model['supportedGenerationMethods']) 
+                    return isset($model['supportedGenerationMethods'])
                         && in_array('generateContent', $model['supportedGenerationMethods']);
                 })
                 ->map(function ($model) {
@@ -170,7 +174,61 @@ class AiConfigurationController extends Controller
         } catch (\GuzzleHttp\Exception\ClientException $e) {
             $response = $e->getResponse();
             $body = json_decode($response->getBody()->getContents(), true);
-            
+
+            return response()->json([
+                'success' => false,
+                'message' => $body['error']['message'] ?? 'Invalid API key or request failed',
+            ], 400);
+        }
+    }
+
+    /**
+     * Fetch available OpenAI models
+     */
+    private function fetchOpenAIModels(string $apiKey)
+    {
+        $client = new \GuzzleHttp\Client([
+            'verify' => false, // Disable SSL verification for local development
+            'timeout' => 30,
+        ]);
+
+        try {
+            $response = $client->get('https://api.openai.com/v1/models', [
+                'headers' => [
+                    'Authorization' => "Bearer {$apiKey}",
+                ],
+            ]);
+
+            $data = json_decode($response->getBody()->getContents(), true);
+
+            if (!isset($data['data'])) {
+                throw new \Exception('Invalid response from OpenAI API');
+            }
+
+            // Filter for GPT models as they are most relevant for chat
+            $models = collect($data['data'])
+                ->filter(function ($model) {
+                    return str_starts_with($model['id'], 'gpt');
+                })
+                ->map(function ($model) {
+                    return [
+                        'name' => $model['id'],
+                        'displayName' => $model['id'],
+                        'description' => '',
+                    ];
+                })
+                ->sortByDesc('name') // Put newer models (higher numbers) generally first
+                ->values()
+                ->toArray();
+
+            return response()->json([
+                'success' => true,
+                'models' => $models,
+            ]);
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            $response = $e->getResponse();
+            $body = json_decode($response->getBody()->getContents(), true);
+
             return response()->json([
                 'success' => false,
                 'message' => $body['error']['message'] ?? 'Invalid API key or request failed',

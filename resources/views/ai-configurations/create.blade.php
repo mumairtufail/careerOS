@@ -35,8 +35,8 @@
                                 return;
                             }
                             
-                            if (this.provider !== 'gemini') {
-                                this.errorMessage = 'Model fetching is currently only supported for Gemini';
+                            if (this.provider !== 'gemini' && this.provider !== 'openai') {
+                                this.errorMessage = 'Model fetching is currently only supported for Gemini and OpenAI';
                                 return;
                             }
                             
@@ -113,8 +113,8 @@
                         <x-input-error :messages="$errors->get('api_key')" class="mt-2" />
                     </div>
 
-                    <!-- Fetch Models Button (for Gemini) -->
-                    <div x-show="provider === 'gemini' && apiKey" class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                    <!-- Fetch Models Button (for Gemini & OpenAI) -->
+                    <div x-show="(provider === 'gemini' || provider === 'openai') && apiKey" class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
                         <div class="flex items-center justify-between">
                             <div class="flex-1">
                                 <h4 class="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-1">
@@ -186,7 +186,7 @@
                                     class="w-full"
                                 />
                                 <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                                    <span x-show="provider === 'gemini'"><strong>Tip:</strong> Enter your API key above and click "Fetch Models" to see available options</span>
+                                    <span x-show="provider === 'gemini' || provider === 'openai'"><strong>Tip:</strong> Enter your API key above and click "Fetch Models" to see available options</span>
                                     <span x-show="provider === 'openai'"><strong>Recommended:</strong> gpt-4, gpt-4-turbo, gpt-3.5-turbo</span>
                                     <span x-show="provider === 'anthropic'"><strong>Recommended:</strong> claude-3-opus, claude-3-sonnet, claude-3-haiku</span>
                                     <span x-show="provider === 'ollama'"><strong>Example:</strong> llama2, mistral, codellama</span>
